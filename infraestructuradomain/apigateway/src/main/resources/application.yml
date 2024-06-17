@@ -1,0 +1,34 @@
+## YAML Template.
+---
+server:
+    port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+#modificar la ruta de swagger-ui.html por /swagger/index.html opuedo poner la ruta que yo desee
+#springdoc:
+#  swagger-ui:
+#    path: /swagger/index.html
+#    enabled: true
+
+spring:
+  application:
+    name: apigateway  
+  cloud:
+    gateway:
+      routes:
+      - id: customer-service
+        uri: lb://businessdomain-customer
+        predicates:
+        - Path=/customer/*, /v3/api-docs/customer
+      - id: product-service
+        uri: lb://businessdomain-product
+        predicates:
+        - Path=/product/*, /v3/api-docs/product
+
+
